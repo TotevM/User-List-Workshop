@@ -1,8 +1,8 @@
-import CreateEdit from './components/Create-edit';
-import DeleteUser from './components/Delete-user';
+import CreateEdit from './components/CreateEdit';
+import DeleteUser from './components/DeleteUser';
 import Footer from './components/Footer';
 import Header from './components/Header'
-import UserDetails from './components/User-details';
+import UserDetails from './components/UserDetails';
 import UserList from './components/UserList';
 
 function App() {
