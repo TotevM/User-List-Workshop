@@ -1,9 +1,21 @@
-import UserListItem from "./UserListItem";
+import { useEffect } from 'react';
+import { useState } from 'react';
+import UserListItem from './UserListItem';
 
-export default function UserList({ users }) {
+export default function UserList() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        function FetchData() {
+            fetch('http://localhost:3030/jsonstore/users')
+                .then((res) => res.json())
+                .then((data) => setUsers(Object.values(data)));
+        }
+        FetchData();
+    }, []);
+
     return (
         <>
-            {' '}
             <table className='table'>
                 <thead>
                     <tr>
@@ -92,11 +104,12 @@ export default function UserList({ users }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* <!-- Table row component --> */}
-                    <UserListItem />
+                    {users.map(user => (
+                        <UserListItem key={user._id} user={user} />
+                    ))}
                 </tbody>
             </table>
-            <button className="btn-add btn">Add new user</button>
+            <button className='btn-add btn'>Add new user</button>
         </>
     );
 }

@@ -1,5 +1,3 @@
-import CreateEdit from './components/CreateEdit';
-import DeleteUser from './components/DeleteUser';
 import Footer from './components/Footer';
 import Header from './components/Header'
 import UserDetails from './components/UserDetails';
@@ -13,11 +11,11 @@ function App() {
           <main className='main'>
               <UserList />
 
-              <UserDetails />
+              {false && <UserDetails />}
 
-              <CreateEdit />
+              {/* {false && <CreateEdit/>}
 
-              <DeleteUser />
+              {false && <DeleteUser/>} */}
           </main>
           <Footer />
       </>
