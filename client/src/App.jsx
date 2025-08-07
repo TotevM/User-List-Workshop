@@ -13,13 +13,10 @@ function App() {
           <main className='main'>
               <UserList />
 
-              {/* <!-- User details component  --> */}
               <UserDetails />
 
-              {/* <!-- Create/Edit Form component  --> */}
               <CreateEdit />
 
-              {/* <!-- Delete user component  --> */}
               <DeleteUser />
           </main>
           <Footer />
