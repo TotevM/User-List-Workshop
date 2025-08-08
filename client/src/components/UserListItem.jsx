@@ -1,4 +1,12 @@
-export default function UserListItem() {
+export default function UserListItem(props) {
+    console.log(props);
+
+    const formattedDate = new Date(props.user.createdAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+    
     return (
         <tr>
             <td>
@@ -8,11 +16,11 @@ export default function UserListItem() {
                     className='image'
                 />
             </td>
-            <td>Peter</td>
-            <td>Johnson</td>
-            <td>peter@abv.bg</td>
-            <td>0812345678</td>
-            <td>June 28, 2022</td>
+            <td>{props.user.firstName}</td>
+            <td>{props.user.lastName}</td>
+            <td>{props.user.email}</td>
+            <td>{props.user.phoneNumber}</td>
+            <td>{formattedDate}</td>
 
             <td className='actions'>
                 <button className='btn edit-btn' title='Edit'>
