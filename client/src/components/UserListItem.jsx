@@ -1,25 +1,25 @@
 export default function UserListItem(props) {
     console.log(props);
 
-    const formattedDate = new Date(props.user.createdAt).toLocaleDateString('en-US', {
+    const formattedDate = new Date(props.createdAt).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
     });
-    
+
     return (
         <tr>
             <td>
                 <img
-                    src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'
-                    alt="Peter's profile"
+                    src={props.imageUrl}
+                    alt={`${props.firstName}'s profile`}
                     className='image'
                 />
             </td>
-            <td>{props.user.firstName}</td>
-            <td>{props.user.lastName}</td>
-            <td>{props.user.email}</td>
-            <td>{props.user.phoneNumber}</td>
+            <td>{props.firstName}</td>
+            <td>{props.lastName}</td>
+            <td>{props.email}</td>
+            <td>{props.phoneNumber}</td>
             <td>{formattedDate}</td>
 
             <td className='actions'>

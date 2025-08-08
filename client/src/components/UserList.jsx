@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import UserListItem from './UserListItem';
+import CreateEdit from './CreateEdit';
 
 export default function UserList() {
     const [users, setUsers] = useState([]);
+    const [showCreate, setShowCreate] = useState(false);
 
     useEffect(() => {
         function FetchData() {
@@ -14,8 +16,13 @@ export default function UserList() {
         FetchData();
     }, []);
 
+    const addUserClickHandler = () => {
+        setShowCreate(true);
+    }
+
     return (
         <>
+        {showCreate && <CreateEdit/>}
             <table className='table'>
                 <thead>
                     <tr>
@@ -105,11 +112,11 @@ export default function UserList() {
                 </thead>
                 <tbody>
                     {users.map((user) => (
-                        <UserListItem key={user._id} user={user} />
+                        <UserListItem key={user._id} {...user} />
                     ))}
                 </tbody>
             </table>
-            <button className='btn-add btn'>Add new user</button>
+            <button onClick={addUserClickHandler} className='btn-add btn'>Add new user</button>
         </>
     );
 }
