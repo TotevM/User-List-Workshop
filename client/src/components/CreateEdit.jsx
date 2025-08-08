@@ -1,13 +1,14 @@
-export default function CreateEdit() {
+export default function CreateEdit({ onClose }) {
     return (
         <div className='overlay'>
-            <div className='backdrop'></div>
+            <div className='backdrop' onClick={onClose}></div>
             <div className='modal'>
                 <div className='user-container'>
                     <header className='headers'>
                         <h2>Edit User/Add User</h2>
                         <button className='btn close'>
                             <svg
+                                onClick={onClose}
                                 aria-hidden='true'
                                 focusable='false'
                                 data-prefix='fas'
@@ -67,7 +68,9 @@ export default function CreateEdit() {
                                 </div>
                             </div>
                             <div className='form-group'>
-                                <label htmlFor='phoneNumber'>Phone number</label>
+                                <label htmlFor='phoneNumber'>
+                                    Phone number
+                                </label>
                                 <div className='input-wrapper'>
                                     <span>
                                         <i className='fa-solid fa-phone'></i>
@@ -135,7 +138,9 @@ export default function CreateEdit() {
                                 </div>
                             </div>
                             <div className='form-group'>
-                                <label htmlFor='streetNumber'>Street number</label>
+                                <label htmlFor='streetNumber'>
+                                    Street number
+                                </label>
                                 <div className='input-wrapper'>
                                     <span>
                                         <i className='fa-solid fa-house-chimney'></i>
@@ -149,10 +154,14 @@ export default function CreateEdit() {
                             </div>
                         </div>
                         <div id='form-actions'>
-                            <button id='action-save' className='btn' type='submit'>
+                            <button
+                                id='action-save'
+                                className='btn'
+                                type='submit'>
                                 Save
                             </button>
                             <button
+                                onClick={onClose}
                                 id='action-cancel'
                                 className='btn'
                                 type='button'>

@@ -16,13 +16,17 @@ export default function UserList() {
         FetchData();
     }, []);
 
-    const addUserClickHandler = () => {
+    const createUserClickHandler = () => {
         setShowCreate(true);
+    }
+
+        const closeUserClickHandler = () => {
+        setShowCreate(false);
     }
 
     return (
         <>
-        {showCreate && <CreateEdit/>}
+        {showCreate && <CreateEdit onClose={closeUserClickHandler}/>}
             <table className='table'>
                 <thead>
                     <tr>
@@ -116,7 +120,7 @@ export default function UserList() {
                     ))}
                 </tbody>
             </table>
-            <button onClick={addUserClickHandler} className='btn-add btn'>Add new user</button>
+            <button onClick={createUserClickHandler} className='btn-add btn'>Add new user</button>
         </>
     );
 }
