@@ -1,4 +1,4 @@
-export default function CreateEdit({ onClose }) {
+export default function CreateEdit({ onClose, onCreate }) {
     const formSubmitHandler = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -25,7 +25,7 @@ export default function CreateEdit({ onClose }) {
                 createdAt: new Date().toISOString(),
             }),
         });
-
+        onCreate(userData);
         onClose();
     };
 
