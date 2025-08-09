@@ -1,31 +1,33 @@
 export default function CreateEdit({ onClose, onCreate }) {
-    const formSubmitHandler = (event) => {
+    const formSubmitHandler = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const userData = Object.fromEntries(formData.entries());
-        console.log(userData);
-        
+
+        const newUser = {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            city: userData.city,
+            country: userData.country,
+            street: userData.street,
+            streetNumber: userData.streetNumber,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+            imageUrl: userData.imageUrl,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        };
 
         const response = fetch('http://localhost:3030/jsonstore/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                city: userData.city,
-                country: userData.country,
-                street: userData.street,
-                streetNumber: userData.streetNumber,
-                email: userData.email,
-                phoneNumber: userData.phoneNumber,
-                imageUrl: userData.imageUrl,
-                createdAt: new Date().toISOString(),
-            }),
+            body: JSON.stringify(newUser),
         });
-        onCreate(userData);
+
+        const savedUser = await response.then(res => res.json());
+        onCreate(savedUser);
         onClose();
     };
 

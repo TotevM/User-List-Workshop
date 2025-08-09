@@ -27,7 +27,6 @@ export default function UserList() {
 
     const createUserHandler = (user) => {
         setUsers((prevUsers) => [...prevUsers, user]);
-        // setShowCreate(false);
     }
     return (
         <>
