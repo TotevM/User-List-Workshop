@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import UserListItem from './UserListItem';
 import CreateEdit from './CreateEdit';
+import DeleteUser from './DeleteUser';
 
 export default function UserList() {
     const [users, setUsers] = useState([]);
     const [showCreate, setShowCreate] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
         function FetchData() {
@@ -28,9 +31,21 @@ export default function UserList() {
     const createUserHandler = (user) => {
         setUsers((prevUsers) => [...prevUsers, user]);
     }
+
+    const onClickShowDeleteHandler = (userId) => (event) => {
+        // event.preventDefault();
+        setSelectedUserId(userId);
+        setShowDelete(true);
+    };
+
+    const closeDeleteHandler = () => {
+        setShowDelete(false);
+        setSelectedUserId(null);
+    };
     return (
         <>
             {showCreate && <CreateEdit onClose={closeUserClickHandler} onCreate={createUserHandler}/>}
+            {showDelete && <DeleteUser userId={selectedUserId} onClose={closeDeleteHandler} />}
             <table className='table'>
                 <thead>
                     <tr>
@@ -120,7 +135,7 @@ export default function UserList() {
                 </thead>
                 <tbody>
                     {users.map((user) => (
-                        <UserListItem key={user._id} {...user} />
+                        <UserListItem key={user._id} {...user} onDelete={onClickShowDeleteHandler}/>
                     ))}
                 </tbody>
             </table>
