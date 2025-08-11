@@ -33,7 +33,6 @@ export default function UserList() {
     }
 
     const onClickShowDeleteHandler = (userId) => (event) => {
-        // event.preventDefault();
         setSelectedUserId(userId);
         setShowDelete(true);
     };
@@ -45,7 +44,7 @@ export default function UserList() {
     return (
         <>
             {showCreate && <CreateEdit onClose={closeUserClickHandler} onCreate={createUserHandler}/>}
-            {showDelete && <DeleteUser userId={selectedUserId} onClose={closeDeleteHandler} />}
+            {showDelete && <DeleteUser userId={selectedUserId} onClose={closeDeleteHandler} setUsers={setUsers} />}
             <table className='table'>
                 <thead>
                     <tr>

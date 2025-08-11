@@ -1,7 +1,18 @@
-export default function DeleteUser({ userId, onClose }){
+export default function DeleteUser({ userId, onClose, setUsers }) {
+    const deleteUserHandler = () => {
+        fetch(`http://localhost:3030/jsonstore/users/${userId}`, {
+            method: 'DELETE',
+        });
+        
+        setUsers((prevUsers) =>
+            [...prevUsers].filter((user) => user._id !== userId)
+        );
+        onClose();
+    };
+
     return (
         <div className='overlay'>
-            <div className='backdrop' onClick={onClose}>></div>
+            <div className='backdrop' onClick={onClose}></div>
             <div className='modal'>
                 <div className='confirm-container'>
                     <header className='headers'>
@@ -24,7 +35,11 @@ export default function DeleteUser({ userId, onClose }){
                     </header>
                     <div className='actions'>
                         <div id='form-actions'>
-                            <button id='action-save' className='btn' type='submit'>
+                            <button
+                                id='action-save'
+                                className='btn'
+                                type='submit'
+                                onClick={deleteUserHandler}>
                                 Delete
                             </button>
                             <button
@@ -40,4 +55,4 @@ export default function DeleteUser({ userId, onClose }){
             </div>
         </div>
     );
-} 
+}
