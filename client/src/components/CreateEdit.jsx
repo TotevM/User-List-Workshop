@@ -38,9 +38,8 @@ export default function CreateEdit({ onClose, onCreate }) {
                 <div className='user-container'>
                     <header className='headers'>
                         <h2>Edit User/Add User</h2>
-                        <button className='btn close'>
+                        <button className='btn close' onClick={onClose}>
                             <svg
-                                onClick={onClose}
                                 aria-hidden='true'
                                 focusable='false'
                                 data-prefix='fas'
