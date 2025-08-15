@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
-// import toLocaleDateString from '../utils/toLocaleDateString';
 
 export default function UserDetails({ onClose, userId }) {
     const [user, setUser] = useState(null);
@@ -9,8 +8,6 @@ export default function UserDetails({ onClose, userId }) {
         fetch(`http://localhost:3030/jsonstore/users/${userId}`)
             .then((res) => res.json())
             .then(setUser);
-
-        console.log(user);
     }, [userId]);
 
     function formattedDate(date) {
@@ -49,7 +46,7 @@ export default function UserDetails({ onClose, userId }) {
                     <div className='content'>
                         <div className='image-container'>
                             <img
-                                src={user?.imageUrl || ''}
+                                src={user?.imageUrl || null}
                                 alt={`${user?.firstName}'s profile`}
                                 className='image'
                             />

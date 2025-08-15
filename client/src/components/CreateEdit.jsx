@@ -1,10 +1,16 @@
-export default function CreateEdit({ onClose, onCreate }) {
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+export default function CreateEdit({ onClose, onCreate, userId }) {
+    const [user, setUser] = useState(null);
+
     const formSubmitHandler = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const userData = Object.fromEntries(formData.entries());
 
-        const newUser = {
+        const payload = {
+            _id: userId ? userId : undefined,
             firstName: userData.firstName,
             lastName: userData.lastName,
             city: userData.city,
@@ -14,22 +20,53 @@ export default function CreateEdit({ onClose, onCreate }) {
             email: userData.email,
             phoneNumber: userData.phoneNumber,
             imageUrl: userData.imageUrl,
-            createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };
 
-        const response = fetch('http://localhost:3030/jsonstore/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newUser),
-        });
+        let savedUser;
 
-        const savedUser = await response.then(res => res.json());
-        onCreate(savedUser);
+        if (userId) {
+            // Edit
+            payload.createdAt=user?.createdAt
+            const response = await fetch(
+            
+                `http://localhost:3030/jsonstore/users/${userId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                }
+            );
+            savedUser = await response.json();
+        } else {
+            // Create
+            payload.createdAt = new Date().toISOString();
+            const response = await fetch(
+                'http://localhost:3030/jsonstore/users',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                }
+            );
+            savedUser = await response.json();
+        }
+
+        onCreate(savedUser, userId ? true : false);
         onClose();
     };
+
+    useEffect(() => {
+        if (!userId) return;
+
+        fetch(`http://localhost:3030/jsonstore/users/${userId}`)
+            .then((res) => res.json())
+            .then(setUser);
+    }, [userId]);
 
     return (
         <div className='overlay'>
@@ -37,7 +74,7 @@ export default function CreateEdit({ onClose, onCreate }) {
             <div className='modal'>
                 <div className='user-container'>
                     <header className='headers'>
-                        <h2>Edit User/Add User</h2>
+                        <h2>{userId != null ? 'Edit User' : 'Add User'}</h2>
                         <button className='btn close' onClick={onClose}>
                             <svg
                                 aria-hidden='true'
@@ -63,6 +100,9 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-user'></i>
                                     </span>
                                     <input
+                                        defaultValue={
+                                            user ? user.firstName : ''
+                                        }
                                         id='firstName'
                                         name='firstName'
                                         type='text'
@@ -76,6 +116,7 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-user'></i>
                                     </span>
                                     <input
+                                        defaultValue={user ? user.lastName : ''}
                                         id='lastName'
                                         name='lastName'
                                         type='text'
@@ -92,6 +133,7 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-envelope'></i>
                                     </span>
                                     <input
+                                        defaultValue={user ? user.email : ''}
                                         id='email'
                                         name='email'
                                         type='text'
@@ -107,6 +149,9 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-phone'></i>
                                     </span>
                                     <input
+                                        defaultValue={
+                                            user ? user.phoneNumber : ''
+                                        }
                                         id='phoneNumber'
                                         name='phoneNumber'
                                         type='text'
@@ -122,6 +167,7 @@ export default function CreateEdit({ onClose, onCreate }) {
                                     <i className='fa-solid fa-image'></i>
                                 </span>
                                 <input
+                                    defaultValue={user ? user.imageUrl : ''}
                                     id='imageUrl'
                                     name='imageUrl'
                                     type='text'
@@ -137,6 +183,7 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-map'></i>
                                     </span>
                                     <input
+                                        defaultValue={user ? user.country : ''}
                                         id='country'
                                         name='country'
                                         type='text'
@@ -149,7 +196,12 @@ export default function CreateEdit({ onClose, onCreate }) {
                                     <span>
                                         <i className='fa-solid fa-city'></i>
                                     </span>
-                                    <input id='city' name='city' type='text' />
+                                    <input
+                                        id='city'
+                                        name='city'
+                                        type='text'
+                                        defaultValue={user ? user.city : ''}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -162,6 +214,7 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-map'></i>
                                     </span>
                                     <input
+                                        defaultValue={user ? user.street : ''}
                                         id='street'
                                         name='street'
                                         type='text'
@@ -177,6 +230,9 @@ export default function CreateEdit({ onClose, onCreate }) {
                                         <i className='fa-solid fa-house-chimney'></i>
                                     </span>
                                     <input
+                                        defaultValue={
+                                            user ? user.streetNumber : ''
+                                        }
                                         id='streetNumber'
                                         name='streetNumber'
                                         type='text'
