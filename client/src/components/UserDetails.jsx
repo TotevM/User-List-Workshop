@@ -1,7 +1,28 @@
-export default function UserDetails({onClose, userId, setUsers}) {
-    
-    
-    
+import { useEffect } from 'react';
+import { useState } from 'react';
+// import toLocaleDateString from '../utils/toLocaleDateString';
+
+export default function UserDetails({ onClose, userId }) {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        fetch(`http://localhost:3030/jsonstore/users/${userId}`)
+            .then((res) => res.json())
+            .then(setUser);
+
+        console.log(user);
+    }, [userId]);
+
+    function formattedDate(date) {
+        return date
+            ? new Date(date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+              })
+            : '';
+    }
+
     return (
         <div className='overlay'>
             <div className='backdrop' onClick={onClose}></div>
@@ -28,41 +49,45 @@ export default function UserDetails({onClose, userId, setUsers}) {
                     <div className='content'>
                         <div className='image-container'>
                             <img
-                                src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'
-                                alt=''
+                                src={user?.imageUrl || ''}
+                                alt={`${user?.firstName}'s profile`}
                                 className='image'
                             />
                         </div>
                         <div className='user-details'>
                             <p>
-                                User Id:{' '}
-                                <strong>62bb0c0eda039e2fdccba57b</strong>
+                                User Id: <strong>{user?._id}</strong>
                             </p>
                             <p>
                                 Full Name:
-                                <strong> Peter Johnson </strong>
+                                <strong>
+                                    {user?.firstName} {user?.lastName}
+                                </strong>
                             </p>
                             <p>
-                                Email: <strong>peter@abv.bg</strong>
+                                Email: <strong>{user?.email}</strong>
                             </p>
                             <p>
-                                Phone Number: <strong>0812345678</strong>
+                                Phone Number:{' '}
+                                <strong>{user?.phoneNumber}</strong>
                             </p>
                             <p>
                                 Address:
                                 <strong>
-                                    {' '}
-                                    Bulgaria, Sofia, Aleksandar Malinov 78{' '}
+                                    {user?.country} {user?.city}, {user?.street}
+                                    , {user?.streetNumber}
                                 </strong>
                             </p>
 
                             <p>
                                 Created on:{' '}
-                                <strong>Wednesday, June 28, 2022</strong>
+                                <strong>
+                                    {user?.createdAt ? formattedDate(user.createdAt) : ''}
+                                </strong>
                             </p>
                             <p>
                                 Modified on:{' '}
-                                <strong>Thursday, June 29, 2022</strong>
+                                <strong>{user?.updatedAt ? formattedDate(user.updatedAt) : ''}</strong>
                             </p>
                         </div>
                     </div>

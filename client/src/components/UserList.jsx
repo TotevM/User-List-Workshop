@@ -13,12 +13,9 @@ export default function UserList() {
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
-        function FetchData() {
-            fetch('http://localhost:3030/jsonstore/users')
-                .then((res) => res.json())
-                .then((data) => setUsers(Object.values(data)));
-        }
-        FetchData();
+        fetch('http://localhost:3030/jsonstore/users')
+            .then((res) => res.json())
+            .then((data) => setUsers(Object.values(data)));
     }, []);
 
     const createUserClickHandler = () => {
@@ -29,10 +26,9 @@ export default function UserList() {
         setShowCreate(false);
     };
 
-
     const createUserHandler = (user) => {
         setUsers((prevUsers) => [...prevUsers, user]);
-    }
+    };
 
     const onClickShowDeleteHandler = (userId) => (event) => {
         setSelectedUserId(userId);
@@ -44,24 +40,40 @@ export default function UserList() {
         setSelectedUserId(null);
     };
 
-    const onEditHandler= (userId) => {
+    const onEditHandler = (userId) => {
         setSelectedUserId(userId);
         setShowCreate(true);
-    }
+    };
 
     const onShowDetailsHandler = (userId) => {
         setSelectedUserId(userId);
         setShowDetails(true);
-    }
+    };
     const closeDetailsHandler = () => {
         setShowDetails(false);
         setSelectedUserId(null);
-    }
+    };
     return (
         <>
-            {showCreate && <CreateEdit onClose={closeUserClickHandler} onCreate={createUserHandler}/>}
-            {showDelete && <DeleteUser userId={selectedUserId} onClose={closeDeleteHandler} setUsers={setUsers} />}
-            {showDetails && <UserDetails userId={selectedUserId} onClose={closeDetailsHandler} />}
+            {showCreate && (
+                <CreateEdit
+                    onClose={closeUserClickHandler}
+                    onCreate={createUserHandler}
+                />
+            )}
+            {showDelete && (
+                <DeleteUser
+                    userId={selectedUserId}
+                    onClose={closeDeleteHandler}
+                    setUsers={setUsers}
+                />
+            )}
+            {showDetails && (
+                <UserDetails
+                    onClose={closeDetailsHandler}
+                    userId={selectedUserId}
+                />
+            )}
 
             <table className='table'>
                 <thead>
@@ -152,7 +164,13 @@ export default function UserList() {
                 </thead>
                 <tbody>
                     {users.map((user) => (
-                        <UserListItem key={user._id} {...user} onDelete={onClickShowDeleteHandler} onEdit={onEditHandler} showDetails={onShowDetailsHandler}/>
+                        <UserListItem
+                            key={user._id}
+                            {...user}
+                            onDelete={onClickShowDeleteHandler}
+                            onEdit={onEditHandler}
+                            showDetails={onShowDetailsHandler}
+                        />
                     ))}
                 </tbody>
             </table>
