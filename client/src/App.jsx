@@ -10,12 +10,6 @@ function App() {
           <Header />
           <main className='main'>
               <UserList />
-
-              {false && <UserDetails />}
-
-              {/* {false && <CreateEdit/>}
-
-              {false && <DeleteUser/>} */}
           </main>
           <Footer />
       </>

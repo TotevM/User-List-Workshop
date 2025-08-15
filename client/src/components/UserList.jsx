@@ -3,11 +3,13 @@ import { useState } from 'react';
 import UserListItem from './UserListItem';
 import CreateEdit from './CreateEdit';
 import DeleteUser from './DeleteUser';
+import UserDetails from './UserDetails';
 
 export default function UserList() {
     const [users, setUsers] = useState([]);
     const [showCreate, setShowCreate] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
@@ -41,10 +43,26 @@ export default function UserList() {
         setShowDelete(false);
         setSelectedUserId(null);
     };
+
+    const onEditHandler= (userId) => {
+        setSelectedUserId(userId);
+        setShowCreate(true);
+    }
+
+    const onShowDetailsHandler = (userId) => {
+        setSelectedUserId(userId);
+        setShowDetails(true);
+    }
+    const closeDetailsHandler = () => {
+        setShowDetails(false);
+        setSelectedUserId(null);
+    }
     return (
         <>
             {showCreate && <CreateEdit onClose={closeUserClickHandler} onCreate={createUserHandler}/>}
             {showDelete && <DeleteUser userId={selectedUserId} onClose={closeDeleteHandler} setUsers={setUsers} />}
+            {showDetails && <UserDetails userId={selectedUserId} onClose={closeDetailsHandler} />}
+
             <table className='table'>
                 <thead>
                     <tr>
@@ -134,7 +152,7 @@ export default function UserList() {
                 </thead>
                 <tbody>
                     {users.map((user) => (
-                        <UserListItem key={user._id} {...user} onDelete={onClickShowDeleteHandler}/>
+                        <UserListItem key={user._id} {...user} onDelete={onClickShowDeleteHandler} onEdit={onEditHandler} showDetails={onShowDetailsHandler}/>
                     ))}
                 </tbody>
             </table>
